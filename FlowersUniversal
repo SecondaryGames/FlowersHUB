@@ -1,0 +1,113 @@
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local plyr = game:GetService("Players").LocalPlayer
+
+local Window = Library:CreateWindow({
+    -- Set Center to true if you want the menu to appear in the center
+    -- Set AutoShow to true if you want the menu to appear when it is created
+    -- Position and Size are also valid options here
+    -- but you do not need to define them unless you are changing them :)
+
+    Title = 'Flowers Universal Script | ' .. game:GetService("Players").LocalPlayer.Name,
+    Center = true,
+    AutoShow = true,
+})
+
+-- You do not have to set your tabs & groups up this way, just a prefrence.
+local Tabs = {
+    -- Creates a new tab titled Main
+    Player = Window:AddTab('Player'),
+    Visuals = Window:AddTab('Visuals'),
+    Scripts = Window:AddTab('Scripts')
+}
+
+local Self = Tabs.Player:AddLeftGroupbox('Self')
+local Visual = Tabs.Visuals:AddLeftGroupbox('Visual')
+local Main = Tabs.Scripts:AddLeftGroupbox('Main')
+
+Self:AddSlider('WalkspeedSlider', {
+    Text = 'Walkspeed',
+    Default = 16,
+    Min = 0,
+    Max = 250,
+    Rounding = 0,
+    Compact = false,
+
+    Callback = function(WalkspeedValue)
+        _G.WS = true
+
+        while _G.WS == true do
+        plyr.Character.Humanoid.WalkSpeed = WalkspeedValue
+        Wait()
+    end
+})
+
+Self:AddSlider('JumpPowerSlider', {
+    Text = 'JumpPower',
+    Default = 35,
+    Min = 0,
+    Max = 250,
+    Rounding = 0,
+    Compact = false,
+
+    Callback = function(JumpPowerValue)
+        _G.JP = true
+
+        while _G.JP == true do
+        plyr.Character.Humanoid.JumpPower = JumpPowerValue
+        Wait()
+    end
+})
+
+local InfYieldButton = Main:AddButton({
+    Text = 'Infinite Yield',
+    Func = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/SecondaryGames/FlowersHUB/main/InfiniteYield"))()
+    end,
+    DoubleClick = false,
+    Tooltip = 'Clicking on this button will execute the script "Infinite Yield".'
+})
+
+local FBButton = Visual:AddButton({
+    Text = 'Fullbright',
+    Func = function()
+        _G.FB = true
+
+        while _G.FB == true do
+        game:GetService("Lighting").Brightness = 2
+        game:GetService("Lighting").ClockTime = 14
+        game:GetService("Lighting").FogEnd = 100000
+        game:GetService("Lighting").GlobalShadows = false
+        game:GetService("Lighting").OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+        Wait(0.01)
+        end
+    DoubleClick = false,
+    Tooltip == 'Pressing on this button will in turn toggle on fullbright. This can not be toggled off!'
+    end
+})
+
+local CSPYButton = Visual:AddButton({
+    Text = 'Chat Spy',
+    Func = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/SecondaryGames/FlowersHUB/main/ChatSpy"))()
+    DoubleClick = false,
+    Tooltip == 'Pressing on this button will in Allow you to see peoples private messages. Also logs Admin Commands & more in Dev Console.'
+    end
+})
+
+Visual:AddToggle('EnableChat', {
+    Text = 'Enable Chat',
+    Default = false, -- Default value (true / false)
+    Tooltip = 'Some games have chat disabled, so when you press on this button it will enable the chat box in the top left corner.', -- Information shown when you hover over the toggle
+
+    Callback = function(ChatEnabledValue)
+        plyr.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = true
+
+        if ChatEnabledValue == false then
+            plyr.PlayerGui.Chat.Frame.ChatChannelParentFrame.Visible = false
+        end
+end
+})
